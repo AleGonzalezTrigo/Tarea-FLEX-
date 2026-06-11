@@ -1,0 +1,699 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #2b2d2f;
+    background-color: #f9f8f6;
+}
+
+/*Con display: flex convertimos este div en el contenedor principal. Sus hijos directos 
+   (sidebar y main-content) se colocan en fila automáticamente uno al lado del otro. */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+.sidebar {
+    width: 250px;
+    background-color: #1b3d2f;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Apilamos los elementos de arriba a abajo */
+    gap: 20px; 
+    flex-shrink: 0; /* Impedimos que la barra se deforme o se encoja si falta espacio horizontal */
+}
+
+.sidebar-logo {
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.logo-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-logo h2 {
+    font-size: 0.9rem;
+}
+
+.brand-subtitle {
+    font-size: 0.55rem;
+    color: #8f9d77;
+    margin-top: 5px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: #eae7e2;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.sidebar-menu li.active a {
+    background-color: #8f9d77;
+    color: #1b3d2f;
+    font-weight: bold;
+}
+
+.sidebar-menu a:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-divider {
+    margin-top: 15px;
+}
+
+.logout-link {
+    color: #ff8a80 !important;
+}
+
+/* El contenido principal se expande para ocupar todo el espacio restante gracias a flex: 1.
+   También lo hacemos flex en vertical para organizar las secciones ordenadamente. */
+.main-content {
+    flex: 1; /* Le dice a esta caja que ocupe todo el espacio libre que quede en la fila */
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-x: hidden;
+}
+
+
+.main-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #eae7e2;
+    padding-bottom: 10px;
+}
+
+.header-title h1 {
+    font-size: 1.5rem;
+    color: #1b3d2f;
+}
+
+.header-title p {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.admin-info span {
+    color: #888;
+    font-size: 0.7rem;
+    display: block;
+}
+
+.admin-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Activo flexbox para que las tarjetas se pongan una al lado de la otra por defecto.
+   Con gap damos separación entre ellas y con flex-wrap hacemos que bajen de fila si la caja es pequeña. */
+.metrics-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    background-color: rgba(27, 61, 47, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(27, 61, 47, 0.1);
+    width: 100%;
+}
+
+.page-1-metrics,
+.page-2-metrics {
+    max-width: 850px;
+    width: 100%;
+}
+
+/*hago qe las tarjetas se puedan encoger si la ventana del navegador se hace más estrecha. */
+.metric-card {
+    width: 240px;
+    background-color: white;
+    border: 1px solid #eae7e2;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 1;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.hidden-toggle {
+    display: none;
+}
+
+.flexbox-status {
+    display: inline;
+}
+
+.no-flexbox-status {
+    display: none;
+}
+
+.hidden-toggle:checked ~ .dashboard-container .main-content .control-box .flexbox-status {
+    display: none;
+}
+
+.hidden-toggle:checked ~ .dashboard-container .main-content .control-box .no-flexbox-status {
+    display: inline;
+}
+
+.hidden-toggle:checked ~ .dashboard-container .main-content .metrics-row {
+    display: block;
+    white-space: nowrap;
+    overflow: visible;
+    background-color: rgba(198, 40, 40, 0.05);
+    border: 2px solid red;
+    padding: 15px;
+}
+
+.hidden-toggle:checked ~ .dashboard-container .main-content .metrics-row .metric-card {
+    display: inline-flex;
+    vertical-align: top;
+    margin-right: 15px;
+}
+
+/*al hacer clic (recibir focus), la tarjeta se hace gigante con un flex-grow de 5 y obliga a las otras a encogerse.*/
+.metrics-row .metric-card:focus {
+    flex-grow: 5 !important;
+    background-color: #f4f7f5;
+    border-color: #8f9d77;
+    box-shadow: 0 4px 15px rgba(27, 61, 47, 0.08);
+    outline: none;
+}
+
+.hidden-toggle:checked ~ .dashboard-container .main-content .metrics-row .metric-card:focus {
+    flex-grow: 1 !important;
+    background-color: white;
+    border-color: #eae7e2;
+    box-shadow: none;
+    transform: none;
+}
+
+.card-icon-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #f5f5f0;
+    color: #6b6f72;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.card-details h3 {
+    font-size: 0.65rem;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.card-details .value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1b3d2f;
+}
+
+.card-details .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.6rem;
+    color: #4a7055;
+    background-color: #eef5ef;
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+.badge-gray {
+    background-color: #f0f0f0 !important;
+    color: #666 !important;
+}
+
+/* Con flex-grow hago que las tarjetas se estiren y rellenen el espacio sobrante.
+   Al poner números distintos (1, 2, 1.5), unas tarjetas se hacen más grandes que otras de forma desigual. */
+.p1-card-1 { 
+    flex-grow: 1; 
+}
+.p1-card-2 { 
+    flex-grow: 2; 
+}
+.p1-card-3 { 
+    flex-grow: 1.5; 
+}
+
+.p2-card-1 {
+    flex-grow: 1; 
+}
+.p2-card-2 { 
+    flex-grow: 1.5; 
+}
+.p2-card-3 { 
+    flex-grow: 1.2; 
+}
+.p2-card-4 { 
+    flex-grow: 1.8; 
+}
+
+/* Usamos flex para poner la tabla de pedidos y la lista de productos populares lado a lado */
+.dashboard-grid {
+    display: flex;
+    gap: 20px;
+}
+
+.panel {
+    background: white;
+    border: 1px solid #eae7e2;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Al panel izquierdo le damos flex: 2 y al derecho flex: 1.
+   Esto significa que el izquierdo se quedará con el doble del espacio disponible en comparación al derecho. */
+.panel-left {
+    flex: 2; /* Proporción de tamaño 2x */
+}
+
+.panel-right {
+    flex: 1; /* Proporción de tamaño 1x */
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.panel-header h2 {
+    font-size: 1rem;
+    color: #1b3d2f;
+}
+
+.btn-all {
+    color: #8e7a55;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.orders-table th {
+    color: #888;
+    padding: 8px;
+    border-bottom: 1px solid #eae7e2;
+}
+
+.orders-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #f5f5f0;
+}
+
+.status-badge {
+    background-color: #fdfaf4;
+    color: #8e7a55;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(142,122,85,0.15);
+    font-size: 0.65rem;
+}
+
+.btn-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #1b3d2f;
+    color: white;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f5f5f0;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.prod-m { background-color: #e2ede5; color: #4a7055; }
+.prod-c1 { background-color: #f7ede8; color: #a06e57; }
+.prod-c2 { background-color: #edf2ed; color: #7f997f; }
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
+}
+
+.product-info span {
+    color: #888;
+    font-size: 0.7rem;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #1b3d2f;
+}
+
+/* Responsive de clase: si la pantalla es menor de 800px de ancho, cambiamos la dirección 
+   de flexbox a vertical (column) para que el layout se adapte a móviles y los bloques se apilen. */
+@media (max-width: 800px) {
+    .dashboard-container, .dashboard-grid {
+        flex-direction: column; /* Pasa de fila a columna */
+    }
+    .sidebar {
+        width: 100%;
+    }
+}
+
+.control-box {
+    background-color: white;
+    border: 1px solid #eae7e2;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.control-status {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #1b3d2f;
+}
+
+.control-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.bocetos-main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.bocetos-main h1 {
+    font-size: 1.8rem;
+    color: #1b3d2f;
+    text-align: center;
+    margin-bottom: 35px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.bocetos-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.boceto-card {
+    background-color: white;
+    border: 1px dashed #999;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.boceto-card.flex-version {
+    border: 2px solid #8f9d77;
+}
+
+.boceto-titulo {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #1b3d2f;
+}
+
+.boceto-card p {
+    font-size: 0.8rem;
+    color: #6b6f72;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+.boceto-content-mockup {
+    background-color: #f1f0ec;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.mock-container-noflex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid red;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.mock-card-red {
+    background-color: #ef9a9a;
+    border: 1.5px solid #c62828;
+    color: #b71c1c;
+    padding: 10px;
+    font-size: 0.75rem;
+    text-align: center;
+    border-radius: 4px;
+    width: 140px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mock-vacío-dashed {
+    border: 1.5px dashed #c62828;
+    color: #c62828;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+.mock-container-flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #2e7d32;
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.mock-card-green {
+    background-color: #a5d6a7;
+    border: 1.5px solid #2e7d32;
+    color: #1b5e20;
+    padding: 10px;
+    font-size: 0.75rem;
+    text-align: center;
+    border-radius: 4px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boceto-fila {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.bocetos-header {
+    background-color: #1b3d2f;
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #8f9d77;
+}
+
+.bocetos-header-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.bocetos-nav-link {
+    color: white;
+    margin-right: 20px;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.bocetos-nav-link-active {
+    color: #8f9d77;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.bocetos-desc {
+    color: #6b6f72;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.bocetos-calc {
+    margin-top: 15px;
+}
+
+.mock-justify-start {
+    justify-content: flex-start;
+}
+
+.boceto-grow-1 {
+    flex: 1;
+}
+
+.boceto-grow-2 {
+    flex: 2;
+}
+
+.boceto-grow-1-5 {
+    flex: 1.5;
+}
+
+.overflow-visible {
+    overflow: visible;
+}
+
+.mock-container-narrow {
+    max-width: 320px;
+    overflow: visible;
+    position: relative;
+}
+
+.mock-card-dashed-9 {
+    background-color: #ffcdd2;
+    border-style: dashed;
+    opacity: 0.9;
+}
+
+.mock-card-dashed-8 {
+    background-color: #ffcdd2;
+    border-style: dashed;
+    opacity: 0.8;
+}
+
+
+.mock-flex-1 {
+    flex: 1 1 240px; 
+    font-size: 0.7rem;
+}
+
+.mock-flex-1-5 {
+    flex: 1.5 1 240px; 
+    font-size: 0.7rem;
+}
+
+.mock-flex-1-2 {
+    flex: 1.2 1 240px; /* flex-grow: 1.2, flex-shrink: 1, flex-basis: 240px */
+    font-size: 0.7rem;
+}
+
+.mock-flex-1-8 {
+    flex: 1.8 1 240px; 
+    font-size: 0.7rem;
+}

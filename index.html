@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>La Botica Natural - Página 1 (3 Tarjetas)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <input type="checkbox" id="toggle-layout-checkbox" class="hidden-toggle">
+
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-circle">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8f9d77" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 8c-2 2-2 5 0 7 2-2 2-5 0-7z"/>
+                    </svg>
+                </div>
+                <h2>LA BOTICA NATURAL</h2>
+                <p class="brand-subtitle">NATURAL • PURO • CONSCIENTE</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active"><a href="index.html">Pág 1: Resumen (3 Tarjetas)</a></li>
+                <li><a href="dashboard.html">Pág 2: Dashboard (4 Tarjetas)</a></li>
+                <li><a href="bocetos.html">Bocetos de Maquetación</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Página 1: Resumen de Ventas (3 Tarjetas)</h1>
+                    <p>Bienvenido al panel público de estadísticas básicas.</p>
+                </div>
+                
+                <div class="admin-profile">
+                    <div class="admin-info">
+                        <strong>Admin Principal</strong>
+                        <span>admin@laboticanatural.com</span>
+                    </div>
+                    <div class="admin-avatar">A</div>
+                </div>
+            </header>
+
+            <div class="control-box">
+                <span class="control-status flexbox-status">Estado: Con Flexbox (Las tarjetas se estiran para cubrir el 100% de la fila)</span>
+                <span class="control-status no-flexbox-status">Estado: Sin Flexbox (Tarjetas fijas de 240px, queda espacio vacío a la derecha)</span>
+                <label for="toggle-layout-checkbox" class="btn-ver control-btn">Probar con flexbox y sin flexbox</label>
+            </div>
+
+            <section class="metrics-row page-1-metrics">
+                
+                <div class="metric-card p1-card-1" tabindex="0">
+                    <div class="card-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="card-details">
+                        <h3>Ingresos Totales</h3>
+                        <div class="value">€452.82</div>
+                        <span class="badge">
+                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            +102.3% vs mes anterior
+                        </span>
+                    </div>
+                </div>
+
+                <div class="metric-card p1-card-2" tabindex="0">
+                    <div class="card-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </div>
+                    <div class="card-details">
+                        <h3>Total Pedidos</h3>
+                        <div class="value">39</div>
+                        <span class="badge">
+                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            +100% vs mes anterior
+                        </span>
+                    </div>
+                </div>
+
+                <div class="metric-card p1-card-3" tabindex="0">
+                    <div class="card-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="card-details">
+                        <h3>Clientes Registrados</h3>
+                        <div class="value">15</div>
+                        <span class="badge">
+                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            +15.4% vs mes anterior
+                        </span>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
