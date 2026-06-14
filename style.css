@@ -10,23 +10,40 @@ body {
     background-color: #f9f8f6;
 }
 
-/*Con display: flex convertimos este div en el contenedor principal. Sus hijos directos 
-   (sidebar y main-content) se colocan en fila automáticamente uno al lado del otro. */
+/* CONTENEDOR PRINCIPAL (Flex Container):
+   Con display: flex convertimos este div en el contenedor principal.
+   Propiedades aplicadas y por defecto en este contenedor:
+   - display: flex -> Activa el contexto flexbox para sus hijos directos.
+   - flex-direction: row (Por defecto) -> Los hijos directos (sidebar y main-content) se colocan en fila horizontal.
+   - flex-wrap: nowrap (Por defecto) -> Los hijos no se envuelven en múltiples líneas.
+   - justify-content: flex-start (Por defecto) -> Los elementos se alinean al inicio del eje principal (izquierda).
+   - align-items: stretch (Por defecto) -> Los hijos se estiran a lo largo del eje secundario (vertical), haciendo que la barra lateral y el contenido tengan la misma altura.
+*/
 .dashboard-container {
     display: flex;
     min-height: 100vh;
 }
 
 
+/* BARRA LATERAL (Flex Item y Flex Container):
+   - Como flex item de .dashboard-container:
+     * flex-grow: 0 (Por defecto) -> No crece para ocupar el espacio sobrante horizontal.
+     * flex-shrink: 0 -> Impedimos explícitamente que la barra lateral se deforme o encoja por debajo de su base.
+     * flex-basis: auto (Por defecto) -> Usa el valor de 'width' (250px) como tamaño base en el eje principal.
+   - Como flex container de sus elementos internos:
+     * display: flex -> Activa flexbox para apilar los menús.
+     * flex-direction: column -> Cambia el eje principal a vertical. Los elementos se colocan en columna.
+     * align-items: stretch (Por defecto) -> Los ítems hijos ocupan todo el ancho disponible dentro de los 250px.
+*/
 .sidebar {
     width: 250px;
     background-color: #1b3d2f;
     color: white;
     padding: 20px;
     display: flex;
-    flex-direction: column; /* Apilamos los elementos de arriba a abajo */
+    flex-direction: column;
     gap: 20px; 
-    flex-shrink: 0; /* Impedimos que la barra se deforme o se encoja si falta espacio horizontal */
+    flex-shrink: 0;
 }
 
 .sidebar-logo {
@@ -56,6 +73,13 @@ body {
     margin-top: 5px;
 }
 
+/* MENÚ DE LA BARRA LATERAL (Flex Container):
+   - display: flex -> Los enlaces se posicionan usando flexbox.
+   - flex-direction: column -> Se colocan en formato de lista vertical.
+   - flex-wrap: nowrap (Por defecto) -> No se dividen en columnas adicionales.
+   - justify-content: flex-start (Por defecto) -> Se agrupan al inicio del menú vertical.
+   - align-items: stretch (Por defecto) -> Los enlaces (<a>) se expanden para ocupar todo el ancho del contenedor.
+*/
 .sidebar-menu {
     list-style: none;
     display: flex;
@@ -92,10 +116,20 @@ body {
     color: #ff8a80 !important;
 }
 
-/* El contenido principal se expande para ocupar todo el espacio restante gracias a flex: 1.
-   También lo hacemos flex en vertical para organizar las secciones ordenadamente. */
+/* CONTENIDO PRINCIPAL (Flex Item y Flex Container):
+   - Como flex item de .dashboard-container:
+     * flex: 1 -> Shorthand equivalente a 'flex-grow: 1; flex-shrink: 1; flex-basis: 0%;'.
+       Esto le dice al contenedor que crezca todo lo posible para ocupar el espacio horizontal restante,
+       se encoja si es necesario, y comience desde un tamaño base de 0%.
+   - Como flex container para sus bloques hijos:
+     * display: flex -> Activa flexbox.
+     * flex-direction: column -> Apila las secciones (header, metrics, grids) de arriba a abajo.
+     * justify-content: flex-start (Por defecto) -> Alinea el contenido hacia arriba.
+     * align-items: stretch (Por defecto) -> Obliga a que los bloques (como .metrics-row y .dashboard-grid)
+       ocupen el 100% del ancho del .main-content.
+*/
 .main-content {
-    flex: 1; /* Le dice a esta caja que ocupe todo el espacio libre que quede en la fila */
+    flex: 1;
     padding: 25px;
     display: flex;
     flex-direction: column;
@@ -104,6 +138,14 @@ body {
 }
 
 
+/* CABECERA (Flex Container):
+   - display: flex -> Organiza el título y el perfil de administrador en una fila horizontal.
+   - justify-content: space-between -> Distribuye el espacio sobrante horizontal entre el título (izquierda)
+     y el perfil de administrador (derecha).
+   - align-items: center -> Alinea verticalmente los centros del título y el perfil para que queden nivelados.
+   - flex-direction: row (Por defecto) -> Los alinea en fila horizontal.
+   - flex-wrap: nowrap (Por defecto) -> Evita que el perfil salte de línea.
+*/
 .main-header {
     display: flex;
     justify-content: space-between; 
@@ -122,6 +164,12 @@ body {
     font-size: 0.8rem;
 }
 
+/* PERFIL DE ADMINISTRADOR (Flex Container):
+   - display: flex -> Alinea el bloque de texto y el avatar circular en fila horizontal.
+   - align-items: center -> Centra el avatar respecto al texto verticalmente.
+   - flex-direction: row (Por defecto) -> Coloca el texto antes del avatar horizontalmente.
+   - justify-content: flex-start (Por defecto) -> Los elementos se agrupan juntos sin dejar espacio en medio.
+*/
 .admin-profile {
     display: flex;
     align-items: center;
@@ -147,28 +195,51 @@ body {
     font-weight: bold;
 }
 
-/* Activo flexbox para que las tarjetas se pongan una al lado de la otra por defecto.
-   Con gap damos separación entre ellas y con flex-wrap hacemos que bajen de fila si la caja es pequeña. */
+/* FILA DE TARJETAS MÉTRICAS (Flex Container):
+   - display: flex -> Alinea las tarjetas en una fila horizontal.
+   - flex-flow: row wrap -> Usamos el shorthand de Flexbox para agrupar 'flex-direction: row' y 'flex-wrap: wrap'.
+     Esto permite que las tarjetas se ubiquen en fila y bajen automáticamente a la siguiente si no hay espacio.
+   - justify-content: flex-start (Por defecto) -> Alinea las tarjetas hacia el lado izquierdo de la fila.
+   - align-items: stretch -> (Estilo Flexbox adicional) Las tarjetas se estiran para tener exactamente la misma altura
+     si una de ellas crece más verticalmente.
+   - min-height: 180px; -> (Estilo Flexbox adicional) Le damos una altura mínima para apreciar mejor el alineamiento vertical
+     y la demostración de la propiedad 'align-self'.
+*/
 .metrics-row {
     display: flex;
+    flex-flow: row wrap;
     gap: 15px;
-    flex-wrap: wrap;
     background-color: rgba(27, 61, 47, 0.05);
     padding: 15px;
     border-radius: 10px;
     border: 1.5px solid rgba(27, 61, 47, 0.1);
     width: 100%;
+    min-height: 180px;
+    align-items: stretch;
 }
 
+/* AJUSTE DE CONTENEDOR FLEX DE TARJETAS:
+   Definimos un ancho fijo de 800px en escritorio (con un max-width: 100% para no romper el responsive) 
+   para asegurar que las matemáticas de crecimiento (Pág 1) y encogimiento (Pág 2) se demuestren con exactitud.
+*/
 .page-1-metrics,
 .page-2-metrics {
-    max-width: 850px;
-    width: 100%;
+    width: 800px;
+    max-width: 100%;
 }
 
-/*hago qe las tarjetas se puedan encoger si la ventana del navegador se hace más estrecha. */
+/* TARJETA MÉTRICA INDIVIDUAL (Flex Item y Flex Container):
+   - Como flex item de .metrics-row:
+     * flex-grow: 0 (Por defecto) -> Se sobrescribe individualmente con .p1-card y .p2-card.
+     * flex-shrink: 1 (Por defecto) -> Se sobrescribe individualmente para controlar cómo se encogen.
+     * flex-basis: 200px -> Definimos un tamaño de base inicial de 200px para cada tarjeta (en lugar de width fijo),
+       que será la base para realizar todos los cálculos flex de reparto de espacio restante.
+   - Como flex container interno:
+     * display: flex -> Alinea el icono circular y los textos de la tarjeta en fila.
+     * align-items: center -> Centra el icono verticalmente respecto al texto.
+*/
 .metric-card {
-    width: 240px;
+    flex: 0 1 200px; /* Shorthand de flex-grow: 0, flex-shrink: 1, flex-basis: 200px */
     background-color: white;
     border: 1px solid #eae7e2;
     border-radius: 8px;
@@ -176,7 +247,6 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-shrink: 1;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -221,9 +291,21 @@ body {
     margin-right: 15px;
 }
 
-/*al hacer clic (recibir focus), la tarjeta se hace gigante con un flex-grow de 5 y obliga a las otras a encogerse.*/
+/* CRECIMIENTO DINÁMICO MEDIANTE :focus (Estilo Flexbox adicional e interactivo):
+   - Selector :focus: Permite interactividad pura con CSS cuando el usuario hace clic o navega con el tabulador.
+   - flex-grow: 10 !important -> Cuando una tarjeta recibe foco, reclama una cantidad muy superior de espacio 
+     sobrante de la fila (10 partes), forzando a las otras a reducirse a sus tamaños mínimos para cederle el espacio.
+     
+   Nota sobre el funcionamiento de flex-grow:
+   * En index.html (Página 1 con 3 tarjetas): Funciona inmediatamente debido a que hay espacio sobrante en la fila
+     (el tamaño base de 3 tarjetas es 600px y la fila mide 800px; sobran 200px).
+   * En dashboard.html (Página 2 con 5 tarjetas): Dado que el tamaño base total de las 5 tarjetas es 1000px y la 
+     fila mide 800px, el contenedor tiene un desbordamiento negativo (-200px), por lo que flex-grow es completamente
+     ignorado. La tarjeta no crecerá al recibir el focus a menos que redimensionemos la ventana del navegador hasta que
+     la fila sea más ancha de 1000px, permitiendo que exista espacio sobrante.
+*/
 .metrics-row .metric-card:focus {
-    flex-grow: 5 !important;
+    flex-grow: 10 !important;
     background-color: #f4f7f5;
     border-color: #8f9d77;
     box-shadow: 0 4px 15px rgba(27, 61, 47, 0.08);
@@ -231,7 +313,8 @@ body {
 }
 
 .hidden-toggle:checked ~ .dashboard-container .main-content .metrics-row .metric-card:focus {
-    flex-grow: 1 !important;
+    flex-grow: 0 !important;
+    flex-shrink: 1 !important;
     background-color: white;
     border-color: #eae7e2;
     box-shadow: none;
@@ -278,32 +361,81 @@ body {
     color: #666 !important;
 }
 
-/* Con flex-grow hago que las tarjetas se estiren y rellenen el espacio sobrante.
-   Al poner números distintos (1, 2, 1.5), unas tarjetas se hacen más grandes que otras de forma desigual. */
+/* PÁGINA 1: CRECIMIENTO DE TARJETAS (flex-grow y flex-shrink con valores explícitos)
+   El contenedor principal mide exactamente 800px. Tenemos 3 tarjetas con un tamaño base (flex-basis) de 200px cada una.
+   Base total ocupada = 3 tarjetas * 200px = 600px.
+   Espacio restante (sobrante) = 800px - 600px = 200px.
+   Para distribuir los 200px sobrantes, sumamos los valores de flex-grow:
+   - p1-card-1 -> flex-grow: 1
+   - p1-card-2 -> flex-grow: 2
+   - p1-card-3 -> flex-grow: 5
+   Suma total de flex-grow = 1 + 2 + 5 = 8 partes.
+   Valor de cada parte = 200px / 8 = 25px.
+   
+   Cálculo del ancho final de cada tarjeta:
+   - Tarjeta 1 (.p1-card-1): Base (200px) + (1 parte * 25px) = 225px.
+   - Tarjeta 2 (.p1-card-2): Base (200px) + (2 partes * 25px) = 250px.
+   - Tarjeta 3 (.p1-card-3): Base (200px) + (5 partes * 25px) = 325px.
+     * Adicionalmente, aplicamos 'order: -1' para mover visualmente la tarjeta 3 al principio de la fila.
+     * Adicionalmente, aplicamos 'align-self: flex-end' en la tarjeta 2 para alinearla abajo de la fila independiente de las otras.
+*/
 .p1-card-1 { 
-    flex-grow: 1; 
+    flex: 1 1 200px; /* flex-grow: 1, flex-shrink: 1, flex-basis: 200px */
 }
 .p1-card-2 { 
-    flex-grow: 2; 
+    flex: 2 1 200px; /* flex-grow: 2, flex-shrink: 1, flex-basis: 200px */
+    align-self: flex-end; /* (Estilo Flexbox adicional) Desalinea este elemento colocándolo abajo del contenedor */
 }
 .p1-card-3 { 
-    flex-grow: 1.5; 
+    flex: 5 1 200px; /* flex-grow: 5, flex-shrink: 1, flex-basis: 200px */
+    order: -1; /* (Estilo Flexbox adicional) Cambia el orden visual en el contenedor: aparece primero */
 }
 
-.p2-card-1 {
-    flex-grow: 1; 
+
+/* PÁGINA 2: ENCOGIMIENTO DE TARJETAS (flex-shrink y flex-grow con valores explícitos)
+   El contenedor mide exactamente 800px. Tenemos 5 tarjetas con un tamaño base (flex-basis) de 200px cada una.
+   Base total requerida = 5 tarjetas * 200px = 1000px.
+   Exceso de tamaño (overflow) = 1000px - 800px = 200px.
+   Dado que el tamaño total (1000px) supera los 800px, las tarjetas deben encogerse.
+   El espacio a sustraer (200px) se distribuye según el peso de cada elemento (flex-shrink * flex-basis):
+   - Tarjeta 1 (.p2-card-1) -> flex-shrink: 1 -> peso = 1 * 200 = 200
+   - Tarjeta 2 (.p2-card-2) -> flex-shrink: 2 -> peso = 2 * 200 = 400
+   - Tarjeta 3 (.p2-card-3) -> flex-shrink: 3 -> peso = 3 * 200 = 600
+   - Tarjeta 4 (.p2-card-4) -> flex-shrink: 0 -> peso = 0 * 200 = 0 (¡No se encoge!)
+   - Tarjeta 5 (.p2-card-5) -> flex-shrink: 2 -> peso = 2 * 200 = 400
+   Suma de pesos = 200 + 400 + 600 + 0 + 400 = 1600.
+   
+   Cálculo del encogimiento y ancho final de cada tarjeta:
+   - Tarjeta 1 (.p2-card-1): Resta (200 / 1600) * 200px = 25px. Ancho final = 200px - 25px = 175px.
+   - Tarjeta 2 (.p2-card-2): Resta (400 / 1600) * 200px = 50px. Ancho final = 200px - 50px = 150px.
+   - Tarjeta 3 (.p2-card-3): Resta (600 / 1600) * 200px = 75px. Ancho final = 200px - 75px = 125px.
+     * Adicionalmente, aplicamos 'align-self: flex-start' para alinear esta tarjeta al borde superior de la fila.
+   - Tarjeta 4 (.p2-card-4): Resta (0 / 1600) * 200px = 0px. Ancho final = 200px. (No pierde tamaño).
+   - Tarjeta 5 (.p2-card-5): Resta (400 / 1600) * 200px = 50px. Ancho final = 200px - 50px = 150px.
+*/
+.p2-card-1 { 
+    flex: 1 1 200px; /* flex-grow: 1, flex-shrink: 1, flex-basis: 200px */
 }
 .p2-card-2 { 
-    flex-grow: 1.5; 
+    flex: 1 2 200px; /* flex-grow: 1, flex-shrink: 2, flex-basis: 200px */
 }
 .p2-card-3 { 
-    flex-grow: 1.2; 
+    flex: 1 3 200px; /* flex-grow: 1, flex-shrink: 3, flex-basis: 200px */
+    align-self: flex-start; /* (Estilo Flexbox adicional) Alinea esta tarjeta al borde superior de la fila */
 }
 .p2-card-4 { 
-    flex-grow: 1.8; 
+    flex: 1 0 200px; /* flex-grow: 1, flex-shrink: 0, flex-basis: 200px -> flex-shrink 0 evita que se encoja */
+}
+.p2-card-5 { 
+    flex: 1 2 200px; /* flex-grow: 1, flex-shrink: 2, flex-basis: 200px */
 }
 
-/* Usamos flex para poner la tabla de pedidos y la lista de productos populares lado a lado */
+/* GRID DE MÓDULOS DEL DASHBOARD (Flex Container):
+   - display: flex -> Organiza los paneles en una estructura horizontal en pantalla grande.
+   - flex-direction: row (Por defecto) -> Pone la tabla y la lista populares lado a lado.
+   - flex-wrap: nowrap (Por defecto) -> Mantiene la tabla y la lista en una sola fila.
+   - align-items: stretch (Por defecto) -> Hace que ambos paneles tengan la misma altura vertical.
+*/
 .dashboard-grid {
     display: flex;
     gap: 20px;
@@ -316,14 +448,20 @@ body {
     padding: 20px;
 }
 
-/* Al panel izquierdo le damos flex: 2 y al derecho flex: 1.
-   Esto significa que el izquierdo se quedará con el doble del espacio disponible en comparación al derecho. */
+/* PANELES INDIVIDUALES (Flex Items):
+   - panel-left:
+     * flex: 2 -> Equivale a 'flex-grow: 2; flex-shrink: 1; flex-basis: 0%;'.
+       Crecerá el doble de rápido para reclamar espacio sobrante en comparación con panel-right.
+   - panel-right:
+     * flex: 1 -> Equivale a 'flex-grow: 1; flex-shrink: 1; flex-basis: 0%;'.
+       Crece a proporción 1.
+*/
 .panel-left {
-    flex: 2; /* Proporción de tamaño 2x */
+    flex: 2;
 }
 
 .panel-right {
-    flex: 1; /* Proporción de tamaño 1x */
+    flex: 1;
 }
 
 .panel-header {
@@ -391,6 +529,12 @@ body {
     gap: 12px;
 }
 
+/* ÍTEM DE PRODUCTO POPULAR (Flex Container):
+   - display: flex -> Alinea la letra inicial, los textos informativos y el precio en una sola línea horizontal.
+   - align-items: center -> Alinea verticalmente los tres elementos al centro.
+   - flex-direction: row (Por defecto) -> Formato en fila horizontal.
+   - flex-wrap: nowrap (Por defecto) -> Mantiene los textos en la misma línea sin fragmentarse.
+*/
 .product-item {
     display: flex;
     align-items: center;
@@ -418,6 +562,15 @@ body {
 .prod-c1 { background-color: #f7ede8; color: #a06e57; }
 .prod-c2 { background-color: #edf2ed; color: #7f997f; }
 
+/* INFORMACIÓN DEL PRODUCTO (Flex Item y Flex Container):
+   - Como flex item:
+     * flex: 1 -> Shorthand para 'grow: 1, shrink: 1, basis: 0%'. Ocupa todo el espacio horizontal restante
+       para empujar el precio del producto hacia el extremo derecho del contenedor principal.
+   - Como flex container:
+     * display: flex -> Permite el uso de flexbox en sus elementos internos.
+     * flex-direction: column -> Apila verticalmente el nombre del producto y la cantidad vendida.
+     * align-items: stretch (Por defecto) -> Los textos se estiran a lo ancho.
+*/
 .product-info {
     flex: 1;
     display: flex;

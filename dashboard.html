@@ -25,7 +25,7 @@
                 
                 <ul class="sidebar-menu">
                     <li><a href="index.html">Pág 1: Resumen (3 Tarjetas)</a></li>
-                    <li class="active"><a href="dashboard.html">Pág 2: Dashboard (4 Tarjetas)</a></li>
+                    <li class="active"><a href="dashboard.html">Pág 2: Dashboard (5 Tarjetas)</a></li>
                 </ul>
             </aside>
 
@@ -33,7 +33,7 @@
                 
                 <header class="main-header">
                     <div class="header-title">
-                        <h1>Página 2: Panel de Control (4 Tarjetas)</h1>
+                        <h1>Página 2: Panel de Control (5 Tarjetas)</h1>
                         <p>Bienvenido de nuevo al panel de administración.</p>
                     </div>
                     
@@ -47,13 +47,28 @@
                 </header>
 
                 <div class="control-box">
-                    <span class="control-status flexbox-status">Estado: Con Flexbox (Las tarjetas se encogen para caber en una sola fila sin desbordar)</span>
-                    <span class="control-status no-flexbox-status">Estado: Sin Flexbox (Tarjetas fijas de 240px no caben en la caja de 850px y se desbordan horizontalmente)</span>
+                    <span class="control-status flexbox-status">Estado: Con Flexbox (5 tarjetas de flex-basis: 200px suman 1000px base y se encogen dinámicamente según su shrink para caber en 800px)</span>
+                    <span class="control-status no-flexbox-status">Estado: Sin Flexbox (5 tarjetas fijas de 200px desbordan horizontalmente saliendo del contenedor de 800px)</span>
                     <label for="toggle-layout-checkbox" class="btn-ver control-btn">Probar con flexbox y sin flexbox</label>
                 </div>
 
+                <!-- 
+                  CONTENEDOR FLEX (metrics-row page-2-metrics):
+                  - display: flex -> Activa el contexto flexbox.
+                  - flex-flow: row wrap -> Alineamiento horizontal con envoltura si el espacio es extremo.
+                  - Ancho fijo de 800px en escritorio.
+                  - min-height: 180px para dar altura mínima e igualar tarjetas.
+                  - align-items: stretch -> Estira las tarjetas verticalmente.
+                -->
                 <section class="metrics-row page-2-metrics">
                     
+                    <!-- 
+                      ELEMENTO FLEX HIJO (metric-card p2-card-1):
+                      - flex-grow: 1, flex-shrink: 1, flex-basis: 200px.
+                      - Base total de las 5 tarjetas = 1000px. Exceso = 200px.
+                      - Peso total de encogimiento = 1600.
+                      - Se encoge en proporción a su shrink:1 -> se restan 25px. Ancho final = 175px.
+                    -->
                     <div class="metric-card p2-card-1" tabindex="0">
                         <div class="card-icon-circle">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -68,6 +83,11 @@
                         </div>
                     </div>
 
+                    <!-- 
+                      ELEMENTO FLEX HIJO (metric-card p2-card-2):
+                      - flex-grow: 1, flex-shrink: 2, flex-basis: 200px.
+                      - Se encoge en proporción a su shrink:2 -> se restan 50px. Ancho final = 150px.
+                    -->
                     <div class="metric-card p2-card-2" tabindex="0">
                         <div class="card-icon-circle">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -82,6 +102,13 @@
                         </div>
                     </div>
 
+                    <!-- 
+                      ELEMENTO FLEX HIJO (metric-card p2-card-3):
+                      - flex-grow: 1, flex-shrink: 3, flex-basis: 200px.
+                      - Se encoge en proporción a su shrink:3 -> se restan 75px. Ancho final = 125px.
+                      - ESTILO ADICIONAL FLEX: 'align-self: flex-start' -> se alinea de forma independiente
+                        en la parte superior del eje secundario de la fila.
+                    -->
                     <div class="metric-card p2-card-3" tabindex="0">
                         <div class="card-icon-circle">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -96,6 +123,11 @@
                         </div>
                     </div>
 
+                    <!-- 
+                      ELEMENTO FLEX HIJO (metric-card p2-card-4):
+                      - flex-grow: 1, flex-shrink: 0, flex-basis: 200px.
+                      - ESTE ELEMENTO TIENE SHRINK 0: ¡No se encoge! Conserva su ancho original de 200px.
+                    -->
                     <div class="metric-card p2-card-4" tabindex="0">
                         <div class="card-icon-circle">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
@@ -104,6 +136,25 @@
                             <h3>Productos Activos</h3>
                             <div class="value">19</div>
                             <span class="badge badge-gray">En catálogo activo</span>
+                        </div>
+                    </div>
+
+                    <!-- 
+                      ELEMENTO FLEX HIJO ADICIONAL (metric-card p2-card-5):
+                      - flex-grow: 1, flex-shrink: 2, flex-basis: 200px.
+                      - Quinta tarjeta añadida para cumplir el requerimiento de 5 cajas.
+                      - Se encoge en proporción a su shrink:2 -> se restan 50px. Ancho final = 150px.
+                    -->
+                    <div class="metric-card p2-card-5" tabindex="0">
+                        <div class="card-icon-circle" style="background-color: #fce8e6; color: #d93025;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="card-details">
+                            <h3>Alertas de Stock</h3>
+                            <div class="value">3</div>
+                            <span class="badge" style="background-color: #fce8e6; color: #d93025; font-size: 0.55rem; padding: 1px 4px; border-radius: 4px;">
+                                Requiere atención
+                            </span>
                         </div>
                     </div>
 

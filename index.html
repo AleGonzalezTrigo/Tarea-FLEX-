@@ -25,7 +25,7 @@
             
             <ul class="sidebar-menu">
                 <li class="active"><a href="index.html">Pág 1: Resumen (3 Tarjetas)</a></li>
-                <li><a href="dashboard.html">Pág 2: Dashboard (4 Tarjetas)</a></li>
+                <li><a href="dashboard.html">Pág 2: Dashboard (5 Tarjetas)</a></li>
             </ul>
         </aside>
 
@@ -47,13 +47,29 @@
             </header>
 
             <div class="control-box">
-                <span class="control-status flexbox-status">Estado: Con Flexbox (Las tarjetas se estiran para cubrir el 100% de la fila)</span>
-                <span class="control-status no-flexbox-status">Estado: Sin Flexbox (Tarjetas fijas de 240px, queda espacio vacío a la derecha)</span>
+                <span class="control-status flexbox-status">Estado: Con Flexbox (3 tarjetas con flex-basis: 200px crecen de forma desigual: grow 1, 2 y 5 para llenar los 800px)</span>
+                <span class="control-status no-flexbox-status">Estado: Sin Flexbox (Las tarjetas pierden el contexto flexbox, alineándose por bloques con espacio sobrante)</span>
                 <label for="toggle-layout-checkbox" class="btn-ver control-btn">Probar con flexbox y sin flexbox</label>
             </div>
 
+            <!-- 
+              CONTENEDOR FLEX (metrics-row page-1-metrics):
+              - Convertido en contenedor por 'display: flex' en CSS (.metrics-row).
+              - Propiedad flex-flow: row wrap (fila horizontal con envoltura si no cabe).
+              - Su ancho útil está fijado a 800px en escritorio para asegurar cálculos estables.
+              - Eje principal: Horizontal. Eje secundario: Vertical.
+              - align-items: stretch (los elementos hijos se estiran verticalmente de forma predeterminada).
+              - min-height: 180px para dar margen vertical y demostrar align-self.
+            -->
             <section class="metrics-row page-1-metrics">
                 
+                <!-- 
+                  ELEMENTO FLEX HIJO (metric-card p1-card-1):
+                  - flex-grow: 1, flex-shrink: 1, flex-basis: 200px.
+                  - Base total = 3 * 200px = 600px. Espacio libre sobrante = 800px - 600px = 200px.
+                  - Recibe 1/8 del espacio restante (25px). Ancho final = 225px.
+                  - Al recibir el focus, flex-grow pasa a 10 dinámicamente y obliga a encogerse al resto.
+                -->
                 <div class="metric-card p1-card-1" tabindex="0">
                     <div class="card-icon-circle">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -68,6 +84,13 @@
                     </div>
                 </div>
 
+                <!-- 
+                  ELEMENTO FLEX HIJO (metric-card p1-card-2):
+                  - flex-grow: 2, flex-shrink: 1, flex-basis: 200px.
+                  - Recibe 2/8 del espacio restante (50px). Ancho final = 250px.
+                  - ESTILO ADICIONAL FLEX: 'align-self: flex-end' -> se alinea de forma independiente
+                    en la parte inferior del eje secundario de la fila.
+                -->
                 <div class="metric-card p1-card-2" tabindex="0">
                     <div class="card-icon-circle">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -82,6 +105,13 @@
                     </div>
                 </div>
 
+                <!-- 
+                  ELEMENTO FLEX HIJO (metric-card p1-card-3):
+                  - flex-grow: 5, flex-shrink: 1, flex-basis: 200px.
+                  - Recibe 5/8 del espacio restante (125px). Ancho final = 325px.
+                  - ESTILO ADICIONAL FLEX: 'order: -1' -> altera su orden de colocación visual.
+                    Aunque en el HTML es el 3er elemento, en el navegador se renderiza el primero de la fila.
+                -->
                 <div class="metric-card p1-card-3" tabindex="0">
                     <div class="card-icon-circle">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
